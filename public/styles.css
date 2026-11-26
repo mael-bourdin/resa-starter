@@ -13,10 +13,12 @@ body {
   vertical-align: middle;
 }
 .title {
+  display: inline;
   font-size: 24px;
   font-weight: bold;
-  color: #e2007a;
-  margin-left: 8px;
+  color: #c4006a;
+  margin: 0 0 0 8px;
+  vertical-align: middle;
 }
 .container {
   width: 960px;
@@ -32,7 +34,12 @@ body {
 .panel-title {
   font-size: 18px;
   font-weight: bold;
-  margin-bottom: 12px;
+  margin: 0 0 12px;
+}
+label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 4px;
 }
 input,
 select {
@@ -41,25 +48,35 @@ select {
   box-sizing: border-box;
   margin-bottom: 8px;
   padding: 6px;
-  border: 1px solid #eee;
-  color: #bbb;
+  border: 1px solid #767676;
+  color: #333;
 }
 .btn {
-  background: #ff8ac4;
+  display: block;
+  width: 100%;
+  border: 0;
+  font: inherit;
+  background: #b8006b;
   color: #fff;
   padding: 8px;
   text-align: center;
   cursor: pointer;
+}
+.btn:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 3px solid #1a5fb4;
+  outline-offset: 2px;
 }
 .booking {
   border-bottom: 1px solid #eee;
   padding: 8px 0;
 }
 .booking .when {
-  color: #ccc;
+  color: #595959;
   font-size: 12px;
 }
 #message {
-  color: #f99;
+  color: #b00020;
   margin-top: 8px;
 }
