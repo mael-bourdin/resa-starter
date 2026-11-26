@@ -53,4 +53,21 @@ Dans Compose, l'application joint la base via `PGHOST=db` et `PGPORT=5432` (surc
 - **Mot de passe refusé après avoir changé `PGPASSWORD`** : même remède, `docker compose down -v` (le mot de passe est fixé à la création du volume).
 - **Linux : `permission denied` sur Docker** : `sudo usermod -aG docker $USER`, puis déconnecte-toi et reconnecte-toi.
 
+## Contribuer
+
+1. Une branche par ticket depuis `main` : `git switch -c feat/7-commits-conventionnels`.
+2. Des commits au format [Conventional Commits](https://www.conventionalcommits.org/fr/) :
+
+   ```text
+   type(portée optionnelle): description à l'impératif, en minuscule
+
+   Closes #7
+   ```
+
+   Types acceptés : `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, `revert`.
+
+3. Une pull request vers `main`, relue par un·e coéquipier·e avant fusion.
+
+`npm install` active les hooks Git (Husky). Le hook `commit-msg` lance commitlint : un message comme `update` est refusé.
+
 ## Équipe
