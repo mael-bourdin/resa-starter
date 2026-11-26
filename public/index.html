@@ -1,31 +1,36 @@
 <!doctype html>
-<html>
+<html lang="fr">
   <head>
     <meta charset="utf-8" />
     <title>Résa</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="header">
-      <img src="logo.svg" />
-      <span class="title">Résa</span>
-    </div>
-    <div class="container">
-      <div class="panel">
-        <div class="panel-title">Nouvelle réservation</div>
+    <header class="header">
+      <img src="logo.svg" alt="Logo de Résa" />
+      <h1 class="title">Résa</h1>
+    </header>
+    <main class="container">
+      <section class="panel" aria-labelledby="new-booking-title">
+        <h2 class="panel-title" id="new-booking-title">Nouvelle réservation</h2>
+        <label for="room">Salle</label>
         <select id="room"></select>
+        <label for="title">Objet</label>
         <input id="title" placeholder="Objet" />
+        <label for="start">Début</label>
         <input id="start" type="datetime-local" />
+        <label for="end">Fin</label>
         <input id="end" type="datetime-local" />
-        <div class="btn">Réserver</div>
-        <div id="message"></div>
-      </div>
-      <div class="panel">
-        <div class="panel-title">Réservations</div>
-        <input id="q" placeholder="Rechercher..." />
+        <button type="button" class="btn">Réserver</button>
+        <p id="message" role="status" aria-live="polite"></p>
+      </section>
+      <section class="panel" aria-labelledby="bookings-title">
+        <h2 class="panel-title" id="bookings-title">Réservations</h2>
+        <label for="q">Rechercher une réservation</label>
+        <input id="q" type="search" placeholder="Rechercher..." />
         <div id="bookings"></div>
-      </div>
-    </div>
+      </section>
+    </main>
     <script src="app.js"></script>
   </body>
 </html>
