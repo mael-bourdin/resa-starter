@@ -11,7 +11,19 @@
     "start": "node src/server.js",
     "dev": "node --watch src/server.js",
     "doctor": "node scripts/doctor.mjs",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{js,mjs}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{html,css,json,md,yml,yaml}": [
+      "prettier --write"
+    ]
   },
   "dependencies": {
     "cors": "2.8.5",
@@ -23,6 +35,12 @@
   "devDependencies": {
     "@commitlint/cli": "^21.2.4",
     "@commitlint/config-conventional": "^21.2.4",
-    "husky": "^9.1.7"
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.15.0",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^17.14.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
+    "prettier": "^3.10.1"
   }
 }
