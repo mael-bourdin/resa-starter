@@ -55,7 +55,7 @@ Dans Compose, l'application joint la base via `PGHOST=db` et `PGPORT=5432` (surc
 
 ## Contribuer
 
-1. Une branche par ticket depuis `main` : `git switch -c feat/7-commits-conventionnels`.
+1. Une branche par ticket depuis `develop` : `git switch develop && git pull && git switch -c feat/14-chevauchement`.
 2. Des commits au format [Conventional Commits](https://www.conventionalcommits.org/fr/) :
 
    ```text
@@ -66,8 +66,22 @@ Dans Compose, l'application joint la base via `PGHOST=db` et `PGPORT=5432` (surc
 
    Types acceptés : `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, `revert`.
 
-3. Une pull request vers `main`, relue par un·e coéquipier·e avant fusion.
+3. Une pull request vers `develop`, relue par l'autre membre de l'équipe avant fusion.
 
 `npm install` active les hooks Git (Husky). Le hook `commit-msg` lance commitlint : un message comme `update` est refusé.
+
+## Branches et release
+
+- `develop` : branche par défaut. Toutes les PR de tickets arrivent ici.
+- `main` : seulement les versions publiées. Une PR vers `main` doit venir de `develop`, sinon le check `source-branch` la bloque.
+
+Pour sortir une version :
+
+1. PR `develop` vers `main`, fusionnée avec « Create a merge commit ».
+2. [release-please](https://github.com/googleapis/release-please) ouvre une PR « chore(main): release X.Y.Z » avec le `CHANGELOG.md` à jour.
+3. Fusionner cette PR crée le tag `vX.Y.Z` et la GitHub Release.
+4. Une PR `main` vers `develop` s'ouvre toute seule pour reporter la version : la fusionner avec « Create a merge commit ».
+
+La première version est forcée à `1.0.0` (`release-as` dans `release-please-config.json`). Retirer cette ligne juste après la sortie de `v1.0.0`.
 
 ## Équipe

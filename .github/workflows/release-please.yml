@@ -1,0 +1,48 @@
+name: Release
+
+# À chaque fusion sur main, release-please ouvre (ou met à jour) une PR de release.
+# Fusionner cette PR crée le tag, la GitHub Release et met à jour CHANGELOG.md.
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+  statuses: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      - id: rp
+        uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
+        with:
+          target-branch: main
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+
+      # Une PR créée par GITHUB_TOKEN ne déclenche pas les autres workflows.
+      # On marque donc nous-mêmes le check « source-branch » sur la PR de release.
+      - name: Valider le check source-branch sur la PR de release
+        if: steps.rp.outputs.pr != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ fromJSON(steps.rp.outputs.pr).number }}
+        run: |
+          sha=$(gh api "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER" --jq .head.sha)
+          gh api "repos/$GITHUB_REPOSITORY/statuses/$sha" \
+            -f state=success -f context=source-branch \
+            -f description="PR de release créée par release-please"
+
+      # Après une release, main a un commit de plus (version + CHANGELOG) :
+      # on ouvre une PR pour le reporter sur develop.
+      - name: Reporter la release sur develop
+        if: steps.rp.outputs.release_created == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.rp.outputs.tag_name }}
+        run: |
+          gh pr create -R "$GITHUB_REPOSITORY" --base develop --head main \
+            --title "chore: reporter la release $TAG sur develop" \
+            --body "Report automatique de la release $TAG. À fusionner avec « Create a merge commit »."
