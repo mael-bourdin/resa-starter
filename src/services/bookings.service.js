@@ -20,11 +20,10 @@ function minutesOfDay(date) {
   return date.getHours() * 60 + date.getMinutes();
 }
 
+// Deux créneaux se chevauchent si chacun commence avant la fin de l'autre.
+// Couvre aussi le cas où le nouveau créneau englobe entièrement l'ancien.
 function overlaps(a, b) {
-  return (
-    (a.start >= b.start && a.start < b.end) ||
-    (a.end > b.start && a.end <= b.end)
-  );
+  return a.start < b.end && b.start < a.end;
 }
 
 function checkRules(booking, existing) {
