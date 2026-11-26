@@ -1,12 +1,20 @@
 async function loadRooms() {
   const res = await fetch("/api/rooms");
   const rooms = await res.json();
-  document.getElementById("room").innerHTML = rooms
-    .map(
-      (r) =>
-        `<option value="${r.id}">${r.name} (${r.capacity} places)</option>`,
-    )
-    .join("");
+  const select = document.getElementById("room");
+  select.replaceChildren(
+    ...rooms.map(
+      (r) => new Option(`${r.name} (${r.capacity} places)`, String(r.id)),
+    ),
+  );
+}
+
+// Crée un élément dont le contenu est du texte, jamais du HTML interprété.
+function el(tag, text, className) {
+  const node = document.createElement(tag);
+  if (className) node.className = className;
+  if (text !== undefined) node.textContent = text;
+  return node;
 }
 
 function formatDate(value) {
@@ -14,15 +22,22 @@ function formatDate(value) {
 }
 
 function render(bookings) {
-  document.getElementById("bookings").innerHTML = bookings
-    .map(
-      (b) => `
-      <div class="booking">
-        <div><b>${b.room}</b> — ${b.title}</div>
-        <div class="when">${formatDate(b.start_at)} → ${formatDate(b.end_at)}</div>
-      </div>`,
-    )
-    .join("");
+  document.getElementById("bookings").replaceChildren(
+    ...bookings.map((b) => {
+      const line = el("div");
+      line.append(el("b", b.room), ` — ${b.title}`);
+      const item = el("div", undefined, "booking");
+      item.append(
+        line,
+        el(
+          "div",
+          `${formatDate(b.start_at)} → ${formatDate(b.end_at)}`,
+          "when",
+        ),
+      );
+      return item;
+    }),
+  );
 }
 
 async function loadBookings() {
@@ -49,7 +64,7 @@ async function book() {
     body: JSON.stringify(body),
   });
   const data = await res.json();
-  document.getElementById("message").innerHTML = res.ok
+  document.getElementById("message").textContent = res.ok
     ? "Réservation enregistrée"
     : data.error;
   loadBookings();
